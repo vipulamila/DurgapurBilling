@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+
+# Local env & IDE
+.sf/
+.vscode/
+.idea/
+*.log
+.DS_Store
+Thumbs.db
