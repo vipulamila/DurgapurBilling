@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Durgapur Infra Projects - Labour Billing & Attendance System</title>
+  <meta name="description" content="Comprehensive Labour Attendance & Billing Management System with dynamic 8-hour/12-hour basis calculations, meal break adjustments, and export to PDF and multiple Excel formats.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z'/></svg>">
+  <script type="module" crossorigin src="./assets/index-DiZ7II1W.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BXQy3KQH.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Section -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand-wrapper">
+          <div class="brand-logo-badge" id="brandLogoText">DIP</div>
+          <div class="brand-info">
+            <div class="brand-title-wrap">
+              <h1 id="headerCompanyName" title="Click to rename Company">DURGAPUR INFRA PROJECTS PVT.</h1>
+              <button class="btn-edit-badge" id="btnEditCompanyTitle" title="Edit Company Name">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                Rename
+              </button>
+            </div>
+            <div class="brand-subtitle-row">
+              <span class="period-badge period-badge-interactive" id="headerPeriodBadge" title="Click to update billing dates">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="18" y2="10"></line></svg>
+                <span id="periodTextDisplay">Labour Billing: 01-10-2026 to 15-10-2026</span>
+                <span style="font-size: 0.72rem; color: #38bdf8; margin-left: 6px; font-weight: 700;">📅 Change</span>
+              </span>
+              <span class="live-calc-tag">Live Engine Active</span>
+              <span class="save-status-tag" id="saveStatusTag">
+                <span class="save-status-dot"></span>
+                <span id="saveStatusText">Auto-Saved</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btnEditSettings" title="Edit Company & Billing Details">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            Billing Config
+          </button>
+          <button class="btn btn-secondary btn-icon-only" id="btnToggleTheme" title="Toggle Light / Dark Mode">
+            <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Legend & Rules bar -->
+      <div class="legend-bar">
+        <div class="legend-items">
+          <span class="legend-chip"><span class="legend-code p-code">P</span> 8 Hours</span>
+          <span class="legend-chip"><span class="legend-code pn-code">Pn</span> 8 + n Hours (e.g. P4=12h, P5=13h, P7=15h)</span>
+          <span class="legend-chip"><span class="legend-code a-code">A</span> Absent</span>
+          <span class="legend-chip"><span class="legend-code dash-code">-</span> Not on list</span>
+        </div>
+        <div class="legend-rates" id="legendRatesDisplay">
+          Tanmay Ghosh & Kiran Devi = Rs. 700 / 8 Hr | All others = 12 Hr rate
+        </div>
+      </div>
+    </header>
+
+    <!-- Quick Date Period & Company Controller Bar -->
+    <section class="quick-config-bar">
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+        <div class="config-section-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="18" y2="10"></line></svg>
+          Billing Dates:
+        </div>
+        
+        <div class="date-inputs-group">
+          <div class="date-picker-wrap">
+            <span>From</span>
+            <input type="date" id="quickStartDate" class="date-input-field" value="2026-10-01">
+          </div>
+          <div class="date-picker-wrap">
+            <span>To</span>
+            <input type="date" id="quickEndDate" class="date-input-field" value="2026-10-15">
+          </div>
+          <button class="btn btn-primary btn-mini" id="btnApplyQuickDates" title="Update table date columns">
+            Update Dates
+          </button>
+        </div>
+
+        <div class="date-preset-chips">
+          <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Quick Presets:</span>
+          <button class="preset-chip active" data-range="1-15-oct">01 - 15 Oct</button>
+          <button class="preset-chip" data-range="16-31-oct">16 - 31 Oct</button>
+          <button class="preset-chip" data-range="full-oct">Full Oct (01-31)</button>
+          <button class="preset-chip" data-range="1-15-nov">01 - 15 Nov</button>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="btn btn-secondary btn-mini" id="btnQuickRenameCompany">
+          🏢 Change Company Name
+        </button>
+      </div>
+    </section>
+
+    <!-- KPI Metric Overview Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card blue">
+        <div class="kpi-icon-box">👥</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Active Labour Force</span>
+          <span class="kpi-value" id="kpiLabourCount">45</span>
+          <span class="kpi-subtext" id="kpiBasisSplit">43 (12-Hr) • 2 (8-Hr)</span>
+        </div>
+      </div>
+
+      <div class="kpi-card purple">
+        <div class="kpi-icon-box">⏱️</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Total Duty Hours</span>
+          <span class="kpi-value" id="kpiTotalHours">4,519.5</span>
+          <span class="kpi-subtext">Across 15 Billing Days</span>
+        </div>
+      </div>
+
+      <div class="kpi-card emerald">
+        <div class="kpi-icon-box">💵</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Labour Subtotal</span>
+          <span class="kpi-value">₹<span id="kpiLabourSubtotal">310,345.83</span></span>
+          <span class="kpi-subtext">Base Wages Earned</span>
+        </div>
+      </div>
+
+      <div class="kpi-card amber">
+        <div class="kpi-icon-box">💼</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Service Charge (<span id="kpiServiceRate">10</span>%)</span>
+          <span class="kpi-value">₹<span id="kpiServiceCharge">31,034.58</span></span>
+          <span class="kpi-subtext">Contractor Commission</span>
+        </div>
+      </div>
+
+      <div class="kpi-card cyan">
+        <div class="kpi-icon-box">🏛️</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Grand Total Billed</span>
+          <span class="kpi-value">₹<span id="kpiGrandTotal">341,380.42</span></span>
+          <span class="kpi-subtext">Final Invoice Value</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toolbar Controls -->
+    <section class="toolbar-container">
+      <div class="toolbar-left">
+        <button class="btn btn-primary" id="btnOpenAddLabour">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Add New Labour
+        </button>
+
+        <div class="search-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search labourer name, rate...">
+        </div>
+
+        <select id="filterBasis" class="filter-select">
+          <option value="ALL">All Bases (8 Hr & 12 Hr)</option>
+          <option value="12 Hr">12 Hr Basis</option>
+          <option value="8 Hr">8 Hr Basis</option>
+        </select>
+      </div>
+
+      <div class="toolbar-right">
+        <!-- Manual Save Button -->
+        <button class="btn btn-primary" id="btnManualSave" title="Save all changes to browser immediately">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          Save Data
+        </button>
+
+        <!-- Download PDF exact format -->
+        <button class="btn btn-secondary" id="btnExportPDF" title="Download Landscape PDF exactly matching uploaded document">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          PDF
+        </button>
+
+        <!-- Download Excel exact form -->
+        <button class="btn btn-secondary" id="btnExportExactExcel" title="Download Excel in exact uploaded billing sheet format">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          Excel (PDF Form)
+        </button>
+
+        <!-- Download Excel different form (Payroll Register) -->
+        <button class="btn btn-secondary" id="btnExportDetailedExcel" title="Download Excel in detailed multi-sheet payroll register format">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          Excel (Register)
+        </button>
+
+        <button class="btn btn-secondary btn-mini" id="btnBackupJSON" title="Download full JSON backup of data">
+          💾 Backup
+        </button>
+
+        <button class="btn btn-secondary btn-mini" id="btnRestoreJSON" title="Restore full data from JSON file">
+          📂 Restore
+        </button>
+        <input type="file" id="inputRestoreFile" accept=".json" style="display: none;">
+
+        <button class="btn btn-outline-danger btn-icon-only" id="btnResetDemoData" title="Reset to Original PDF Sample Data">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Main Attendance & Wage Matrix Table -->
+    <main class="table-wrapper">
+      <div class="table-scroll-container">
+        <table class="billing-table" id="billingTable">
+          <thead>
+            <tr id="tableHeaderRow">
+              <th class="pinned-left pinned-sno">S.No</th>
+              <th class="pinned-left pinned-name col-name">Labour Name</th>
+              <th class="pinned-left pinned-rate">Rate (₹)</th>
+              <th class="pinned-left pinned-basis">Basis</th>
+              <!-- Date columns dynamically injected -->
+              <th class="pinned-right pinned-total-hrs">Total Hrs</th>
+              <th class="pinned-right pinned-labour-amt">Labour Amt (₹)</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Table rows dynamically populated -->
+          </tbody>
+          <tfoot id="tableFoot">
+            <!-- Totals row dynamically populated -->
+          </tfoot>
+        </table>
+      </div>
+    </main>
+
+    <!-- Bottom Notes & Financial Reconciliation Card -->
+    <section class="bottom-summary-grid">
+      <!-- Site Supervisor Notes -->
+      <div class="notes-card">
+        <div class="card-title-row">
+          <div class="card-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Site Supervisor & Duty Time Notes
+          </div>
+          <span class="form-hint">Auto-saved to billing record</span>
+        </div>
+        <textarea id="supervisorNotes" class="notes-textarea" placeholder="Record incident details, meal break delays, overtime authorizations, or supervisor remarks here..."></textarea>
+      </div>
+
+      <!-- Financial Calculation Summary Card -->
+      <div class="financial-card">
+        <div class="card-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+          Billing Financial Breakdown
+        </div>
+        
+        <div class="finance-rows">
+          <div class="finance-row">
+            <span>Labour Subtotal (Wages):</span>
+            <span class="val">₹<span id="summaryLabourSubtotal">310,345.83</span></span>
+          </div>
+
+          <div class="finance-row">
+            <span>
+              Contractor Service Charge 
+              <span class="markup-input-wrap">
+                (<input type="number" id="inputServiceChargeRate" class="markup-input" value="10" min="0" max="100" step="0.5">%)
+              </span>:
+            </span>
+            <span class="val">₹<span id="summaryServiceCharge">31,034.58</span></span>
+          </div>
+
+          <div class="finance-row grand-total-row">
+            <span>Grand Total Payable:</span>
+            <span class="val">₹<span id="summaryGrandTotal">341,380.42</span></span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+          <button class="btn btn-primary" id="btnQuickExportPDF" style="flex: 1;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Print / Save PDF
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Add Labour Modal -->
+  <div class="modal-overlay" id="modalAddLabour">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalLabourTitle">Add New Labour</h3>
+        <button class="modal-close-btn" id="btnCloseAddLabourModal">&times;</button>
+      </div>
+      <form id="formAddLabour">
+        <div class="modal-body">
+          <input type="hidden" id="editLabourId" value="">
+          
+          <div class="form-group">
+            <label for="inputLabourName">Labour / Worker Full Name *</label>
+            <input type="text" id="inputLabourName" class="form-control" placeholder="e.g. Roushan Giri" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label for="inputLabourRate">Daily Rate (₹) *</label>
+              <input type="number" id="inputLabourRate" class="form-control" placeholder="e.g. 950" required min="1" step="1">
+            </div>
+
+            <div class="form-group">
+              <label for="selectLabourBasis">Rate Basis *</label>
+              <select id="selectLabourBasis" class="form-control">
+                <option value="12 Hr">12 Hr Basis (Std Rate/12)</option>
+                <option value="8 Hr">8 Hr Basis (Std Rate/8)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="selectInitialAttendance">Initial Attendance for Current Period</label>
+            <select id="selectInitialAttendance" class="form-control">
+              <option value="P4">P4 (12 Hours per day)</option>
+              <option value="P">P (8 Hours per day)</option>
+              <option value="-">- (Not on list initially)</option>
+              <option value="A">A (Mark Absent initially)</option>
+            </select>
+            <span class="form-hint">You can easily edit any individual day's attendance by clicking on its cell.</span>
+          </div>
+
+          <!-- Meal Break Helper Flexibility -->
+          <div style="background: rgba(37, 99, 235, 0.08); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; margin-bottom: 6px;">
+              💡 Meal & Shift Deduction Flexibility Note
+            </div>
+            <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">
+              If a worker takes an extended meal break or leaves early (e.g. Kamlesh Nonia on 03.10 took +30 min meal break resulting in 11.5h duty time), simply record it as <strong>P3.5</strong> (8 + 3.5 = 11.5 hrs) or enter decimal hours directly in the cell editor.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnCancelAddLabour">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveLabour">Save Labour</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Settings / Billing Config Modal -->
+  <div class="modal-overlay" id="modalSettings">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Billing Configuration & Dates</h3>
+        <button class="modal-close-btn" id="btnCloseSettingsModal">&times;</button>
+      </div>
+      <form id="formSettings">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="inputCompanyName">Company / Contractor Name</label>
+            <input type="text" id="inputCompanyName" class="form-control" value="DURGAPUR INFRA PROJECTS PVT.">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label for="inputSettingsStartDate">Billing Start Date</label>
+              <input type="date" id="inputSettingsStartDate" class="form-control" value="2026-10-01">
+            </div>
+            <div class="form-group">
+              <label for="inputSettingsEndDate">Billing End Date</label>
+              <input type="date" id="inputSettingsEndDate" class="form-control" value="2026-10-15">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputPeriodText">Billing Period Subtitle</label>
+            <input type="text" id="inputPeriodText" class="form-control" value="Labour Billing: 01-10-2026 to 15-10-2026">
+          </div>
+
+          <div class="form-group">
+            <label for="inputLegendText">Attendance Legend Description</label>
+            <input type="text" id="inputLegendText" class="form-control" value="P = 8 hours | Pn = 8+n hours | A = Absent | - = Not on list | Tanmay Ghosh & Kiran Devi = Rs. 700 / 8 Hr | All others = 12 Hr rate">
+          </div>
+
+          <div class="form-group">
+            <label for="inputMarkupPercent">Contractor Service Charge %</label>
+            <input type="number" id="inputMarkupPercent" class="form-control" value="10" min="0" max="100" step="0.5">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnCancelSettings">Cancel</button>
+          <button type="submit" class="btn btn-primary">Apply Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Quick Rename Company Modal -->
+  <div class="modal-overlay" id="modalRenameCompany">
+    <div class="modal-box" style="max-width: 450px;">
+      <div class="modal-header">
+        <h3>Change Company Name</h3>
+        <button class="modal-close-btn" id="btnCloseRenameCompanyModal">&times;</button>
+      </div>
+      <form id="formRenameCompany">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="inputQuickCompanyName">Company / Firm Name *</label>
+            <input type="text" id="inputQuickCompanyName" class="form-control" placeholder="e.g. DURGAPUR INFRA PROJECTS PVT." required>
+            <span class="form-hint">Updates dashboard header, PDF report, and Excel billing registers.</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnCancelRenameCompany">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Company Name</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Inline Cell Popover Editor -->
+  <div class="cell-popover" id="cellPopover">
+    <div class="popover-header">
+      <span id="popoverWorkerInfo">Edit Day Attendance</span>
+      <button class="popover-close" id="btnPopoverClose">&times;</button>
+    </div>
+
+    <!-- Quick preset buttons -->
+    <div class="popover-quick-buttons">
+      <button class="quick-btn" data-code="P4" title="12 Hours (Standard 12h Shift)">P4 (12h)</button>
+      <button class="quick-btn" data-code="P" title="8 Hours (Standard 8h Shift)">P (8h)</button>
+      <button class="quick-btn" data-code="P5" title="13 Hours (1h Overtime)">P5 (13h)</button>
+      <button class="quick-btn" data-code="P6" title="14 Hours (2h Overtime)">P6 (14h)</button>
+      <button class="quick-btn" data-code="P7" title="15 Hours (3h Overtime)">P7 (15h)</button>
+      <button class="quick-btn" data-code="P3.5" title="11.5 Hours (e.g. 30m Meal Delay)">P3.5</button>
+      <button class="quick-btn" data-code="A" title="Absent">A</button>
+      <button class="quick-btn" data-code="-" title="Not on list">-</button>
+    </div>
+
+    <!-- Custom Code or Hours Input -->
+    <div class="popover-custom-wrap">
+      <input type="text" id="popoverCustomInput" class="popover-input" placeholder="Type Pn, 12, 11.5, etc.">
+      <button class="btn btn-primary btn-mini" id="btnApplyCustomCode">Apply</button>
+    </div>
+
+    <div class="popover-preview">
+      <span>Hours: <strong id="popoverPreviewHrs">12</strong>h</span>
+      <span>Daily Wage: <strong id="popoverPreviewWage">₹950.00</strong></span>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Logic -->
+</body>
+</html>
